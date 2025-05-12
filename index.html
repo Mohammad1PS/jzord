@@ -30,6 +30,12 @@
             direction: rtl;
         }
     </style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("EfdBsOH1GpoAm7tP6"); // User ID/Public Key
+   })();
+</script>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
@@ -37,7 +43,7 @@
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <a href="#" class="flex items-center">
-                    <i class="fas fa-tooth text-3xl text-blue-600 mr-2"></i>
+                    <img src="clinic_logo.png" alt="عيادة جذور لوغو" class="w-10 h-10 rounded-full mr-2">
                     <h1 class="text-2xl font-bold text-gray-800">عيادة جذور لطب الأسنان</h1>
                 </a>
                 <nav class="hidden md:flex space-x-8 space-x-reverse">
@@ -575,20 +581,26 @@
         });
         
         // Appointment Form Submission
-        const appointmentForm = document.getElementById('appointmentForm');
-        const confirmation = document.getElementById('confirmation');
-        
-        appointmentForm.addEventListener('submit', (e) => {
+        const appointmentForm = document.getElementById("appointmentForm");
+        const confirmation = document.getElementById("confirmation");
+
+        appointmentForm.addEventListener("submit", (e) => {
             e.preventDefault();
-            // Here you would typically send the form data to a server
-            // For demonstration, we'll just show the confirmation message
-            appointmentForm.reset();
-            confirmation.classList.remove('hidden');
-            setTimeout(() => {
-                confirmation.classList.add('hidden');
-            }, 5000);
+
+            emailjs.sendForm("service_e91lbts", "template_4q7uxzv", appointmentForm)
+                .then(() => {
+                    console.log("SUCCESS!");
+                    appointmentForm.reset();
+                    confirmation.classList.remove("hidden");
+                    setTimeout(() => {
+                        confirmation.classList.add("hidden");
+                    }, 5000);
+                }, (error) => {
+                    console.log("FAILED...", error);
+                    alert("Oops... " + JSON.stringify(error));
+                });
         });
-        
+
         // Contact Form Submission
         const contactForm = document.getElementById('contactForm');
         const contactConfirmation = document.getElementById('contact-confirmation');
